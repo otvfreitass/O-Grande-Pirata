@@ -3,119 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Império dos Piratas - Simulador Autônomo</title>
+    <title>Império Pirata - O Jogo Idle</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #07090e; color: #f3f4f6; }
+        body { font-family: 'Inter', sans-serif; background-color: #050b14; color: #f3f4f6; }
         .pirate-title { font-family: 'Cinzel', serif; }
-        canvas { background: linear-gradient(to bottom, #020617, #090d16); border-radius: 0.75rem; border: 1px solid rgba(234, 179, 8, 0.3); }
+        .tab-active { border-bottom: 2px solid #eab308; color: #eab308; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-    <!-- Header -->
-    <header class="bg-gray-900/90 backdrop-blur border-b border-yellow-600/30 py-4 px-4 sm:px-6 flex justify-between items-center sticky top-0 z-50">
+    <!-- Header / Barra de Recursos -->
+    <header class="bg-gray-950 border-b border-yellow-600/30 py-3 px-4 sticky top-0 z-50 flex justify-between items-center shadow-lg">
         <div class="flex items-center space-x-2">
-            <span class="text-2xl">🏴‍☠️</span>
-            <span class="pirate-title text-base sm:text-xl text-yellow-500 font-bold tracking-wider">IMPÉRIO PIRATA</span>
+            <span class="text-xl">🏴‍☠️</span>
+            <span class="pirate-title text-sm sm:text-lg text-yellow-500 font-bold">IMPÉRIO PIRATA</span>
         </div>
-        <div id="authBtnContainer">
-            <button onclick="entrarNoJogo()" class="bg-yellow-600 hover:bg-yellow-500 text-gray-950 font-bold px-4 py-2 rounded-lg text-sm transition shadow-lg shadow-yellow-600/20">Entrar no Jogo</button>
+        <div class="flex items-center space-x-3 text-right">
+            <div class="bg-gray-900 border border-yellow-600/40 px-3 py-1 rounded-lg">
+                <span class="text-xs text-gray-400 block">Ouro</span>
+                <span class="text-sm sm:text-base font-bold text-yellow-400" id="headerOuro">500 🪙</span>
+            </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-grow flex items-center justify-center px-4 py-6">
-        <div class="max-w-3xl w-full text-center">
-            
-            <!-- Tela Inicial (Landing) -->
-            <div id="viewLanding" class="space-y-6">
-                <div class="inline-block bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-xs px-3 py-1.5 rounded-full font-semibold uppercase tracking-wider">
-                    ⚓ Simulação Autônoma dos Sete Mares
-                </div>
-                
-                <h1 class="pirate-title text-3xl sm:text-5xl text-yellow-500 font-extrabold leading-tight">
-                    Sua Tripulação Luta e Navega Sozinha!
-                </h1>
-                
-                <p class="text-gray-300 text-base sm:text-lg max-w-lg mx-auto">
-                    Assista aos capitães desbravarem ilhas, encontrarem tesouros e escreverem suas próprias histórias em tempo real.
-                </p>
+    <!-- Navegação por Abas (Otimizado para Mobile) -->
+    <nav class="bg-gray-900 border-b border-gray-800 flex justify-around text-xs sm:text-sm font-semibold text-gray-400">
+        <button onclick="mudarAba('frota')" id="btnTabFrota" class="py-3 px-3 tab-active transition">🗺️ Frota</button>
+        <button onclick="mudarAba('loja')" id="btnTabLoja" class="py-3 px-3 transition">🛒 Estaleiro</button>
+        <button onclick="mudarAba('rede')" id="btnTabRede" class="py-3 px-3 transition">👥 Tripulação</button>
+        <button onclick="mudarAba('diario')" id="btnTabDiario" class="py-3 px-3 transition">📜 Diário</button>
+    </nav>
 
-                <div class="bg-gray-900/90 border border-yellow-600/40 p-6 rounded-2xl shadow-2xl space-y-4 text-left">
-                    <h3 class="text-lg font-bold text-white text-center">Seu Link de Recrutamento</h3>
+    <!-- Conteúdo Principal -->
+    <main class="flex-grow p-4 max-w-xl mx-auto w-full">
+        
+        <!-- ABA 1: FROTA & AÇÃO PRINCIPAL -->
+        <div id="tabFrota" class="space-y-4">
+            <div class="bg-gray-900 border border-yellow-600/40 p-5 rounded-2xl shadow-xl text-center space-y-3">
+                <div class="inline-block bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-xs px-3 py-1 rounded-full font-semibold">
+                    ⚓ Produção Automática Ativa
+                </div>
+                <h2 class="pirate-title text-xl text-yellow-500 font-bold" id="lblNomeCapitao">Capitão Novato</h2>
+                <p class="text-xs text-gray-300">Seus navios navegam e saqueiam tesouros mesmo quando você está offline.</p>
+                
+                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800 flex justify-around items-center">
                     <div>
-                        <label class="block text-xs uppercase tracking-wider text-gray-400 mb-1 font-semibold">Compartilhe para aumentar sua frota:</label>
-                        <div class="flex">
-                            <input type="text" id="referralLink" readonly class="bg-gray-950 border border-gray-700 rounded-l-lg px-3 py-2.5 text-xs sm:text-sm w-full text-gray-300 focus:outline-none">
-                            <button onclick="copiarLink()" class="bg-yellow-600 hover:bg-yellow-500 text-gray-950 font-bold px-4 rounded-r-lg text-sm transition">Copiar</button>
-                        </div>
-                        <p id="msgCopia" class="text-xs text-green-400 mt-1.5 text-center hidden">Link copiado com sucesso!</p>
+                        <span class="text-xs text-gray-400 block">Ganhos por Segundo</span>
+                        <span class="text-lg font-bold text-green-400" id="statGPS">+5 🪙/s</span>
                     </div>
-
-                    <button onclick="entrarNoJogo()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-gray-950 font-extrabold py-3.5 px-6 rounded-xl transition text-base shadow-lg text-center">
-                        ⚔️ Acessar Simulação e Frota
-                    </button>
+                    <div class="border-l border-gray-800 pl-4">
+                        <span class="text-xs text-gray-400 block">Navios na Frota</span>
+                        <span class="text-lg font-bold text-yellow-400" id="statNavios">1 Barco</span>
+                    </div>
                 </div>
+
+                <!-- Botão de Saque Manual -->
+                <button onclick="saqueManual()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-gray-950 font-extrabold py-3.5 rounded-xl transition shadow-lg text-sm sm:text-base">
+                    ⚔️ Saquear Mar Aberto (Manual)
+                </button>
             </div>
 
-            <!-- Painel do Jogo & Simulador -->
-            <div id="viewDashboard" class="hidden space-y-6 text-left">
-                <div class="bg-gray-900 border border-yellow-600/40 p-5 rounded-2xl shadow-xl space-y-4">
-                    <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                        <div>
-                            <h2 class="text-lg font-bold text-yellow-500 pirate-title" id="lblCapitao">Capitão</h2>
-                            <p class="text-xs text-gray-400" id="lblRecrutador">Rede: Ativa</p>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-xs text-gray-400 block">Tesouro Acumulado</span>
-                            <span class="text-lg font-bold text-green-400" id="statTesouro">450 🪙</span>
-                        </div>
-                    </div>
-
-                    <!-- Canvas do Oceano -->
-                    <div class="relative w-full overflow-hidden">
-                        <p class="text-xs text-yellow-500/80 mb-1 font-semibold">🗺️ Mapa Ao Vivo (Sua tripulação navegando):</p>
-                        <canvas id="pirateCanvas" width="700" height="250" class="w-full h-[220px] shadow-inner"></canvas>
-                    </div>
-
-                    <!-- Feed de Histórias Automáticas -->
-                    <div class="bg-gray-950 p-4 rounded-xl border border-gray-800">
-                        <h4 class="text-xs uppercase tracking-wider text-yellow-500 font-bold mb-2">📜 Diário de Bordo (Histórias Automáticas):</h4>
-                        <div id="storyLog" class="space-y-2 text-xs text-gray-300 h-28 overflow-y-auto pr-2">
-                            <p class="text-gray-500">Zarpando para o mar aberto... Aguardando eventos da tripulação.</p>
-                        </div>
-                    </div>
-
-                    <!-- Opções de Link de Indicação -->
-                    <div>
-                        <label class="block text-xs uppercase tracking-wider text-gray-400 mb-1 font-semibold">Link para recrutar mais marinheiros:</label>
-                        <div class="flex">
-                            <input type="text" id="referralLinkDash" readonly class="bg-gray-950 border border-gray-700 rounded-l-lg px-3 py-2 text-xs w-full text-gray-300">
-                            <button onclick="copiarLinkDash()" class="bg-yellow-600 hover:bg-yellow-500 text-gray-950 font-bold px-3 rounded-r-lg text-xs">Copiar</button>
-                        </div>
-                    </div>
-
-                    <button onclick="sairConta()" class="w-full bg-red-950/40 hover:bg-red-900/50 border border-red-800/50 text-red-300 font-semibold py-2 rounded-lg text-xs transition">
-                        Sair do Navio
-                    </button>
-                </div>
+            <!-- Resumo Rápido do Diário -->
+            <div class="bg-gray-900 border border-gray-800 p-4 rounded-xl">
+                <h4 class="text-xs uppercase tracking-wider text-yellow-500 font-bold mb-2">Último Evento:</h4>
+                <p id="ultimoEvento" class="text-xs text-gray-300">Zarpando para o mar em busca de fortuna...</p>
             </div>
-
         </div>
+
+        <!-- ABA 2: ESTALEIRO / MELHORIAS (LOJA IDLE) -->
+        <div id="tabLoja" class="hidden space-y-3">
+            <h3 class="pirate-title text-lg text-yellow-500 font-bold mb-2">Compre Melhorias e Navios</h3>
+            
+            <!-- Item 1 -->
+            <div class="bg-gray-900 border border-gray-800 p-4 rounded-xl flex justify-between items-center">
+                <div>
+                    <h4 class="font-bold text-sm text-white">⛵ Barco de Pesca Reforçado</h4>
+                    <p class="text-xs text-gray-400">+2 moedas por segundo</p>
+                    <span class="text-xs text-yellow-400 font-semibold" id="custoBarco">Custo: 50 🪙</span>
+                </div>
+                <button onclick="comprarMelhoria('barco')" class="bg-yellow-600 hover:bg-yellow-500 text-gray-950 text-xs font-bold px-4 py-2.5 rounded-lg transition">Contratar</button>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="bg-gray-900 border border-gray-800 p-4 rounded-xl flex justify-between items-center">
+                <div>
+                    <h4 class="font-bold text-sm text-white">🚢 Galeão de Guerra</h4>
+                    <p class="text-xs text-gray-400">+15 moedas por segundo</p>
+                    <span class="text-xs text-yellow-400 font-semibold" id="custoGaleao">Custo: 300 🪙</span>
+                </div>
+                <button onclick="comprarMelhoria('galeao')" class="bg-yellow-600 hover:bg-yellow-500 text-gray-950 text-xs font-bold px-4 py-2.5 rounded-lg transition">Contratar</button>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="bg-gray-900 border border-gray-800 p-4 rounded-xl flex justify-between items-center">
+                <div>
+                    <h4 class="font-bold text-sm text-white">🏴‍☠️ Taverna Clandestina</h4>
+                    <p class="text-xs text-gray-400">+60 moedas por segundo</p>
+                    <span class="text-xs text-yellow-400 font-semibold" id="custoTaverna">Custo: 1200 🪙</span>
+                </div>
+                <button onclick="comprarMelhoria('taverna')" class="bg-yellow-600 hover:bg-yellow-500 text-gray-950 text-xs font-bold px-4 py-2.5 rounded-lg transition">Contratar</button>
+            </div>
+        </div>
+
+        <!-- ABA 3: TRIPULAÇÃO & REDE DE INDICAÇÃO -->
+        <div id="tabRede" class="hidden space-y-4">
+            <div class="bg-gray-900 border border-yellow-600/40 p-5 rounded-2xl shadow-xl space-y-3">
+                <h3 class="pirate-title text-lg text-yellow-500 font-bold">Rede de Recrutamento</h3>
+                <p class="text-xs text-gray-300">Convide novos marinheiros com seu link exclusivo. Cada amigo que entrar aumenta os bônus da sua frota!</p>
+                
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-gray-400 mb-1 font-semibold">Seu Link de Convite:</label>
+                    <div class="flex">
+                        <input type="text" id="referralLink" readonly class="bg-gray-950 border border-gray-700 rounded-l-lg px-3 py-2.5 text-xs w-full text-gray-300">
+                        <button onclick="copiarLink()" class="bg-yellow-600 hover:bg-yellow-500 text-gray-950 font-bold px-4 rounded-r-lg text-xs transition">Copiar</button>
+                    </div>
+                    <p id="msgCopia" class="text-xs text-green-400 mt-1 text-hidden hidden">Link copiado com sucesso!</p>
+                </div>
+
+                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800 text-center">
+                    <span class="text-xs text-gray-400 block uppercase">Marinheiros Recrutados</span>
+                    <span class="text-2xl font-bold text-yellow-400" id="statIndicados">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 4: DIÁRIO DE BORDO (HISTÓRIAS EM TEMPO REAL) -->
+        <div id="tabDiario" class="hidden space-y-3">
+            <h3 class="pirate-title text-lg text-yellow-500 font-bold mb-2">📜 Histórias dos Sete Mares</h3>
+            <div class="bg-gray-950 border border-gray-800 p-4 rounded-xl h-80 overflow-y-auto space-y-2 text-xs text-gray-300" id="storyLogContainer">
+                <p class="text-gray-500">Iniciando diário de bordo...</p>
+            </div>
+        </div>
+
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-950 border-t border-gray-900 text-center py-4 text-xs text-gray-500">
-        &copy; 2026 Império Pirata. Versão Autônoma PT-BR.
+    <footer class="bg-gray-950 border-t border-gray-900 text-center py-3 text-xs text-gray-500">
+        &copy; 2026 Império Pirata. Versão Idle PT-BR.
     </footer>
 
-    <!-- Script de Simulação e Rede -->
+    <!-- MOTOR DE JOGO IDLE -->
     <script>
+        // Estado do Jogo (Salvo no navegador)
+        let jogo = {
+            ouro: parseFloat(localStorage.getItem('pirate_ouro')) || 100,
+            gps: parseFloat(localStorage.getItem('pirate_gps')) || 5,
+            naviosCount: parseInt(localStorage.getItem('pirate_navios')) || 1,
+            barcos: parseInt(localStorage.getItem('pirate_barcos')) || 0,
+            galeoes: parseInt(localStorage.getItem('pirate_galeoes')) || 0,
+            tavernas: parseInt(localStorage.getItem('pirate_tavernas')) || 0,
+            indicados: parseInt(localStorage.getItem('pirate_indicados')) || 0
+        };
+
+        // Custos Iniciais
+        let custos = {
+            barco: 50,
+            galeao: 300,
+            taverna: 1200
+        };
+
+        // Identificação do Jogador e Indicação
         const urlParams = new URLSearchParams(window.location.search);
         const refId = urlParams.get('ref');
-        if (refId) localStorage.setItem('pirate_uplink', refId);
+        if (refId) {
+            localStorage.setItem('pirate_uplink', refId);
+        }
 
         let meuId = localStorage.getItem('pirate_my_id');
         if (!meuId) {
@@ -123,141 +177,136 @@
             localStorage.setItem('pirate_my_id', meuId);
         }
 
-        const uplinkAtual = localStorage.getItem('pirate_uplink') || 'Ninguém (Direto)';
         const baseURL = window.location.origin + window.location.pathname;
-        const meuLinkCompleto = `${baseURL}?ref=${meuId}`;
+        const meuLink = `${baseURL}?ref=${meuId}`;
+        document.getElementById('referralLink').value = meuLink;
+        document.getElementById('lblNomeCapitao').innerText = `Capitão ${meuId}`;
+        document.getElementById('statIndicados').innerText = jogo.indicados;
 
-        document.getElementById('referralLink').value = meuLinkCompleto;
-        document.getElementById('referralLinkDash').value = meuLinkCompleto;
+        // Sistema de Abas
+        function mudarAba(aba) {
+            document.getElementById('tabFrota').classList.add('hidden');
+            document.getElementById('tabLoja').classList.add('hidden');
+            document.getElementById('tabRede').classList.add('hidden');
+            document.getElementById('tabDiario').classList.add('hidden');
+
+            document.getElementById('btnTabFrota').className = "py-3 px-3 transition text-gray-400";
+            document.getElementById('btnTabLoja').className = "py-3 px-3 transition text-gray-400";
+            document.getElementById('btnTabRede').className = "py-3 px-3 transition text-gray-400";
+            document.getElementById('btnTabDiario').className = "py-3 px-3 transition text-gray-400";
+
+            if (aba === 'frota') {
+                document.getElementById('tabFrota').classList.remove('hidden');
+                document.getElementById('btnTabFrota').className = "py-3 px-3 tab-active transition";
+            } else if (aba === 'loja') {
+                document.getElementById('tabLoja').classList.remove('hidden');
+                document.getElementById('btnTabLoja').className = "py-3 px-3 tab-active transition";
+            } else if (aba === 'rede') {
+                document.getElementById('tabRede').classList.remove('hidden');
+                document.getElementById('btnTabRede').className = "py-3 px-3 tab-active transition";
+            } else if (aba === 'diario') {
+                document.getElementById('tabDiario').classList.remove('hidden');
+                document.getElementById('btnTabDiario').className = "py-3 px-3 tab-active transition";
+            }
+        }
+
+        // Ação de Saque Manual (Clique)
+        function saqueManual() {
+            let ganho = Math.max(1, Math.floor(jogo.gps * 0.5));
+            jogo.ouro += ganho;
+            adicionarHistoria(`Realizou um saque rápido em navio mercante e obteve +${ganho} 🪙!`);
+            atualizarTela();
+        }
+
+        // Comprar Melhorias
+        function comprarMelhoria(tipo) {
+            let precoBarco = Math.round(50 * Math.pow(1.15, jogo.barcos));
+            let precoGaleao = Math.round(300 * Math.pow(1.15, jogo.galeoes));
+            let precoTaverna = Math.round(1200 * Math.pow(1.15, jogo.tavernas));
+
+            if (tipo === 'barco' && jogo.ouro >= precoBarco) {
+                jogo.ouro -= precoBarco;
+                jogo.barcos++;
+                jogo.naviosCount++;
+                jogo.gps += 2;
+                adicionarHistoria(`Contratou um Barco de Pesca Reforçado!`);
+            } else if (tipo === 'galeao' && jogo.ouro >= precoGaleao) {
+                jogo.ouro -= precoGaleao;
+                jogo.galeoes++;
+                jogo.naviosCount++;
+                jogo.gps += 15;
+                adicionarHistoria(`Adicionou um possante Galeão de Guerra à frota!`);
+            } else if (tipo === 'taverna' && jogo.ouro >= precoTaverna) {
+                jogo.ouro -= precoTaverna;
+                jogo.tavernas++;
+                jogo.gps += 60;
+                adicionarHistoria(`Inaugurou uma Taverna Clandestina no porto!`);
+            } else {
+                alert("Ouro insuficiente para esta contratação!");
+            }
+            atualizarTela();
+        }
 
         function copiarLink() {
-            navigator.clipboard.writeText(meuLinkCompleto);
-            mostrarMensagemCopia();
-        }
-
-        function copiarLinkDash() {
-            navigator.clipboard.writeText(meuLinkCompleto);
-            alert("Link de indicação copiado!");
-        }
-
-        function mostrarMensagemCopia() {
+            navigator.clipboard.writeText(meuLink);
             const msg = document.getElementById('msgCopia');
             msg.classList.remove('hidden');
-            setTimeout(() => msg.classList.add('hidden'), 3000);
+            setTimeout(() => msg.classList.add('hidden'), 2500);
         }
 
-        function entrarNoJogo() {
-            localStorage.setItem('pirate_logged', 'true');
-            atualizarInterface();
-            iniciarSimulacao();
-        }
+        // Histórias Automáticas
+        const bancoHistorias = [
+            "encontrou uma garrafa com coordenadas para um tesouro esquecido.",
+            "derrotou um bando de contrabandistas na costa da ilha.",
+            "navegou por águas nebulosas e recolheu tesouros deixados por naufrágios.",
+            "encontrou especiarias valiosas em um porto comercial secreto.",
+            "enfrentou ventos fortes, mas a tripulação garantiu o espólio.",
+            "desenterrou um baú de moedas enterrado sob a lua cheia."
+        ];
 
-        function sairConta() {
-            localStorage.removeItem('pirate_logged');
-            atualizarInterface();
-        }
+        function adicionarHistoria(texto) {
+            const container = document.getElementById('storyLogContainer');
+            const p = document.createElement('p');
+            p.innerHTML = `⭐ <b>[${new Date().toLocaleTimeString()}]</b> ${texto}`;
+            container.prepend(p);
+            document.getElementById('ultimoEvento').innerText = texto;
 
-        function atualizarInterface() {
-            const isLogged = localStorage.getItem('pirate_logged') === 'true';
-            const landing = document.getElementById('viewLanding');
-            const dashboard = document.getElementById('viewDashboard');
-            const authBtn = document.getElementById('authBtnContainer');
-
-            if (isLogged) {
-                landing.classList.add('hidden');
-                dashboard.classList.remove('hidden');
-                authBtn.innerHTML = `<span class="text-xs text-yellow-400 font-semibold bg-yellow-500/10 border border-yellow-500/30 px-3 py-1.5 rounded-lg">⚓ ${meuId}</span>`;
-                document.getElementById('lblCapitao').innerText = `Capitão ${meuId}`;
-                document.getElementById('lblRecrutador').innerText = `Recrutado por: ${uplinkAtual}`;
-            } else {
-                dashboard.classList.add('hidden');
-                landing.classList.remove('hidden');
-                authBtn.innerHTML = `<button onclick="entrarNoJogo()" class="bg-yellow-600 hover:bg-yellow-500 text-gray-950 font-bold px-4 py-2 rounded-lg text-sm transition shadow-lg">Entrar no Jogo</button>`;
+            if (container.children.length > 25) {
+                container.removeChild(container.lastChild);
             }
         }
 
-        // --- MOTOR DE SIMULAÇÃO AUTÔNOMA DOS PIRATAS ---
-        let simulacaoAtiva = false;
-        let tesouro = 450;
+        // Loop Principal do Idle (A cada 1 segundo)
+        setInterval(() => {
+            jogo.ouro += jogo.gps / 10; // Atualiza fracionado a cada 100ms ou por segundo
+            atualizarTela();
+        }, 1000);
 
-        function iniciarSimulacao() {
-            if (simulacaoAtiva) return;
-            simulacaoAtiva = true;
+        // Eventos aleatórios automáticos a cada 8 segundos
+        setInterval(() => {
+            let historiaAleatoria = bancoHistorias[Math.floor(Math.random() * bancoHistorias.length)];
+            let ouroExtra = Math.floor(jogo.gps * 3);
+            jogo.ouro += ouroExtra;
+            adicionarHistoria(`A frota ${historiaAleatoria} (+${ouroExtra} 🪙)`);
+        }, 8000);
 
-            const canvas = document.getElementById('pirateCanvas');
-            const ctx = canvas.getContext('2d');
+        function atualizarTela() {
+            document.getElementById('headerOuro').innerText = Math.floor(jogo.ouro) + " 🪙";
+            document.getElementById('statGPS').innerText = `+${jogo.gps.toFixed(1)} 🪙/s`;
+            document.getElementById('statNavios').innerText = `${jogo.naviosCount} Embarcações`;
 
-            let piratas = [
-                { x: 50, y: 50, vx: 1.2, vy: 0.8, nome: "Barba Ruiva", emoji: "🏴‍☠️" },
-                { x: 300, y: 120, vx: -1.0, vy: 0.5, nome: "Capitão Drake", emoji: "⛵" },
-                { x: 500, y: 180, vx: 0.7, vy: -1.1, nome: "Olho de Vidro", emoji: "🚢" },
-                { x: 150, y: 90, vx: 0.9, vy: -0.7, nome: "Capitão Flame", emoji: "🗡️" },
-                { x: 400, y: 150, vx: -0.8, vy: -0.6, nome: "Rainha dos Mares", emoji: "🦜" }
-            ];
+            // Atualiza preços na loja
+            document.getElementById('custoBarco').innerText = `Custo: ${Math.round(50 * Math.pow(1.15, jogo.barcos))} 🪙`;
+            document.getElementById('custoGaleao').innerText = `Custo: ${Math.round(300 * Math.pow(1.15, jogo.galeoes))} 🪙`;
+            document.getElementById('custoTaverna').innerText = `Custo: ${Math.round(1200 * Math.pow(1.15, jogo.tavernas))} 🪙`;
 
-            function animar() {
-                if (!simulacaoAtiva) return;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                ctx.fillStyle = "#1e293b";
-                ctx.beginPath(); ctx.arc(150, 70, 30, 0, Math.PI * 2); ctx.fill();
-                ctx.beginPath(); ctx.arc(550, 180, 45, 0, Math.PI * 2); ctx.fill();
-
-                piratas.forEach(p => {
-                    p.x += p.vx;
-                    p.y += p.vy;
-
-                    if (p.x < 20 || p.x > canvas.width - 20) p.vx *= -1;
-                    if (p.y < 20 || p.y > canvas.height - 20) p.vy *= -1;
-
-                    ctx.font = "20px sans-serif";
-                    ctx.fillText(p.emoji, p.x, p.y);
-                    
-                    ctx.fillStyle = "#fbbf24";
-                    ctx.font = "10px Inter, sans-serif";
-                    ctx.fillText(p.nome, p.x - 10, p.y + 15);
-                });
-
-                requestAnimationFrame(animar);
-            }
-            animar();
-
-            const historias = [
-                "encontrou uma garrafa com um mapa antigo na costa da Ilha Nebulosa.",
-                "venceu um duelo feroz contra um monstro marinho e garantiu 50 moedas de ouro!",
-                "desembarcou em uma ilha deserta em busca de rum e especiarias raras.",
-                "avistou um navio mercante inimigo e decidiu iniciar uma perseguição estratégica.",
-                "trocou histórias de conquistas em uma taverna pirata clandestina.",
-                "encontrou um baú misterioso enterrado sob o sol escaldante.",
-                "descobriu ruínas de uma civilização perdida e desenterrou artefatos valiosos!",
-                "enfrentou uma tempestade violenta em alto-mar, mas salvou a tripulação!"
-            ];
-
-            setInterval(() => {
-                if (!simulacaoAtiva) return;
-                const pirataAleatorio = piratas[Math.floor(Math.random() * piratas.length)];
-                const historiaAleatoria = historias[Math.floor(Math.random() * historias.length)];
-                const ouroGanho = Math.floor(Math.random() * 30) + 10;
-                
-                tesouro += ouroGanho;
-                document.getElementById('statTesouro').innerText = `${tesouro} 🪙`;
-
-                const logDiv = document.getElementById('storyLog');
-                const novaLinha = document.createElement('p');
-                novaLinha.innerHTML = `⭐ <b>${pirataAleatorio.nome}</b> ${historiaAleatoria} <span class="text-green-400">(+${ouroGanho}🪙)</span>`;
-                
-                logDiv.prepend(novaLinha);
-                
-                if (logDiv.children.length > 6) {
-                    logDiv.removeChild(logDiv.lastChild);
-                }
-            }, 4000);
-        }
-
-        window.onload = function() {
-            if (localStorage.getItem('pirate_logged') === 'true') {
-                entrarNoJogo();
-            }
+            // Salva progresso
+            localStorage.setItem('pirate_ouro', jogo.ouro);
+            localStorage.setItem('pirate_gps', jogo.gps);
+            localStorage.setItem('pirate_navios', jogo.naviosCount);
+            localStorage.setItem('pirate_barcos', jogo.barcos);
+            localStorage.setItem('pirate_galeoes', jogo.galeoes);
+            localStorage.setItem('pirate_tavernas', jogo.tavernas);
         }
     </script>
 </body>
