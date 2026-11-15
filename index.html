@@ -3,105 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Império dos Piratas - Versão Completa Idle</title>
+    <title>Grand Line Idle - Império Pirata One Piece</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #040812; color: #f3f4f6; }
+        body { font-family: 'Inter', sans-serif; background-color: #030712; color: #f3f4f6; }
         .pirate-title { font-family: 'Cinzel', serif; }
         .tab-active { border-bottom: 2px solid #eab308; color: #eab308; background: rgba(234, 179, 8, 0.08); }
-        .card-pirate { background: linear-gradient(135deg, #0d1322 0%, #070b14 100%); border: 1px solid rgba(234, 179, 8, 0.25); }
-        .progress-bar { transition: width 0.3s ease; }
+        .card-pirate { background: linear-gradient(135deg, #0d1322 0%, #060913 100%); border: 1px solid rgba(234, 179, 8, 0.3); }
+        .progress-bar { transition: width 0.4s linear; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between select-none">
 
-    <!-- Topo / Header de Recursos -->
-    <header class="bg-gray-950 border-b border-yellow-600/40 py-2.5 px-4 sticky top-0 z-50 shadow-xl">
+    <!-- TOPO / HEADER DE STATUS DO CAPITÃO -->
+    <header class="bg-gray-950 border-b border-yellow-600/40 py-2.5 px-4 sticky top-0 z-50 shadow-2xl">
         <div class="flex justify-between items-center max-w-2xl mx-auto">
-            <div class="flex items-center space-x-2">
-                <div class="w-9 h-9 rounded-lg bg-yellow-600/20 border border-yellow-500/40 flex items-center justify-center text-lg">🏴‍☠️</div>
+            <div class="flex items-center space-x-2.5">
+                <div class="w-10 h-10 rounded-xl bg-yellow-600/20 border border-yellow-500/50 flex items-center justify-center text-xl shadow-inner">🏴‍☠️</div>
                 <div>
                     <h1 class="pirate-title text-xs sm:text-sm text-yellow-500 font-bold" id="uiCapitaoNome">Capitão</h1>
-                    <span class="text-[10px] text-gray-400">Nível <span id="uiNivel">1</span> • <span id="uiRecompensa">฿ 10,000</span></span>
+                    <span class="text-[10px] text-gray-400">Nível <span id="uiNivel">1</span> • Recompensa: <span id="uiRecompensa" class="text-yellow-400 font-bold">฿ 30,000</span></span>
                 </div>
             </div>
-            <div class="flex space-x-2">
-                <div class="bg-gray-900 border border-yellow-600/30 px-3 py-1 rounded-lg text-right">
-                    <span class="text-[9px] text-gray-400 block uppercase">Ouro (Berries)</span>
-                    <span class="text-xs sm:text-sm font-bold text-yellow-400" id="uiOuro">500 🪙</span>
+            <div class="flex items-center space-x-2">
+                <div class="bg-gray-900 border border-yellow-600/30 px-3 py-1 rounded-xl text-right">
+                    <span class="text-[9px] text-gray-400 block uppercase tracking-wider">Tesouro (Berries)</span>
+                    <span class="text-xs sm:text-sm font-bold text-yellow-400" id="uiBerries">1,000 🪙</span>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Navegação por Abas Inferior/Superior -->
-    <nav class="bg-gray-900 border-b border-gray-800 flex justify-around text-xs font-semibold text-gray-400 shadow-md">
-        <button onclick="mudarAba('aventura')" id="btnAventura" class="py-3 px-2 tab-active transition flex flex-col items-center"><span>⚔️</span> Aventura</button>
-        <button onclick="mudarAba('tripulacao')" id="btnTripulacao" class="py-3 px-2 transition flex flex-col items-center"><span>👥</span> Tripulação</button>
-        <button onclick="mudarAba('estaleiro')" id="btnEstaleiro" class="py-3 px-2 transition flex flex-col items-center"><span>🛒</span> Estaleiro</button>
-        <button onclick="mudarAba('diario')" id="btnDiario" class="py-3 px-2 transition flex flex-col items-center"><span>📜</span> Diário</button>
-        <button onclick="mudarAba('rede')" id="btnRede" class="py-3 px-2 transition flex flex-col items-center"><span>🔗</span> Recrutar</button>
+    <!-- NAVEGAÇÃO POR ABAS -->
+    <nav class="bg-gray-900 border-b border-gray-800 flex justify-around text-[11px] sm:text-xs font-semibold text-gray-400 shadow-lg">
+        <button onclick="mudarAba('aventura')" id="btnAventura" class="py-3 px-2 tab-active transition flex flex-col items-center space-y-0.5"><span>🗺️</span> <span>Mundo & Aventura</span></button>
+        <button onclick="mudarAba('tripulacao')" id="btnTripulacao" class="py-3 px-2 transition flex flex-col items-center space-y-0.5"><span>👥</span> <span>Tripulação</span></button>
+        <button onclick="mudarAba('navios')" id="btnNavios" class="py-3 px-2 transition flex flex-col items-center space-y-0.5"><span>⛵</span> <span>Navios</span></button>
+        <button onclick="mudarAba('diario')" id="btnDiario" class="py-3 px-2 transition flex flex-col items-center space-y-0.5"><span>📜</span> <span>Histórias</span></button>
+        <button onclick="mudarAba('rede')" id="btnRede" class="py-3 px-2 transition flex flex-col items-center space-y-0.5"><span>🔗</span> <span>Recrutar</span></button>
     </nav>
 
-    <!-- Conteúdo Principal -->
+    <!-- CONTEÚDO PRINCIPAL -->
     <main class="flex-grow p-4 max-w-xl mx-auto w-full space-y-4">
         
-        <!-- ABA 1: AVENTURA & COMBATE IDLE -->
+        <!-- ABA 1: MUNDO DE ONE PIECE & AVENTURA AUTOMÁTICA -->
         <div id="tabAventura" class="space-y-4">
-            <div class="card-pirate p-5 rounded-2xl shadow-2xl space-y-4">
-                <div class="flex justify-between items-center">
-                    <span class="text-xs text-yellow-400 font-bold uppercase tracking-wider">🗺️ Rota Atual: <span id="uiNomeIlha">East Blue (Mar Calmo)</span></span>
-                    <span class="text-xs text-green-400 font-semibold" id="uiGPS">+12 🪙/s</span>
+            <div class="card-pirate p-4 sm:p-5 rounded-2xl shadow-2xl space-y-4">
+                <div class="flex justify-between items-center border-b border-gray-800 pb-2.5">
+                    <div>
+                        <span class="text-[10px] text-yellow-500 font-bold uppercase tracking-wider block">Região Atual</span>
+                        <h3 class="pirate-title text-sm sm:text-base text-white font-bold" id="uiIlhaNome">East Blue (Vila Syrup)</h3>
+                    </div>
+                    <span class="text-xs text-green-400 font-bold bg-green-950/40 border border-green-800/50 px-2.5 py-1 rounded-full" id="uiBPS">+15 🪙/s</span>
                 </div>
 
-                <!-- Card da Missão Ativa -->
-                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800 space-y-3">
+                <!-- CANVAS DO MAPA ANIMADO (O Navio navega sozinho) -->
+                <div class="relative w-full overflow-hidden rounded-xl border border-yellow-600/30 bg-[#040812]">
+                    <canvas id="onePieceMapCanvas" width="600" height="200" class="w-full h-[180px]"></canvas>
+                </div>
+
+                <!-- Card de Missão / Batalha Automática -->
+                <div class="bg-gray-950 p-3.5 rounded-xl border border-gray-800 space-y-2.5">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-sm text-white" id="uiMissaoNome">Caçando Saqueadores Locais</h3>
-                        <span class="text-xs text-yellow-500 font-mono" id="uiTempoMissao">00:05</span>
+                        <span class="text-xs font-bold text-yellow-400" id="uiMissaoTitulo">Batalhando contra Saqueadores...</span>
+                        <span class="text-xs text-gray-400 font-mono" id="uiTempoMissao">00:05</span>
                     </div>
-                    
-                    <!-- Barra de Progresso da Missão -->
-                    <div class="w-full bg-gray-900 rounded-full h-3 overflow-hidden border border-gray-800">
+                    <div class="w-full bg-gray-900 rounded-full h-2.5 overflow-hidden border border-gray-800">
                         <div id="barraProgresso" class="bg-gradient-to-r from-yellow-600 to-yellow-400 h-full progress-bar" style="width: 0%"></div>
                     </div>
-                    <p class="text-[11px] text-gray-400 text-center" id="uiStatusMissao">Sua frota está combatendo os inimigos na costa...</p>
+                    <p class="text-[11px] text-gray-400 text-center italic" id="uiMissaoDesc">Sua tripulação autônoma avança implacavelmente pelo mar...</p>
                 </div>
 
-                <!-- Botão de Ataque Manual -->
-                <button onclick="atacarManual()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-gray-950 font-extrabold py-3.5 rounded-xl transition shadow-lg text-sm flex items-center justify-center space-x-2">
-                    <span>⚔️</span> <span>Saque Rápido (Acelerar Tesouro)</span>
+                <!-- Botão de Ação Manual -->
+                <button onclick="saqueManual()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-gray-950 font-extrabold py-3.5 rounded-xl transition shadow-lg text-sm flex items-center justify-center space-x-2">
+                    <span>⚔️</span> <span>Investida Rápida no Mar (Saquear)</span>
                 </button>
             </div>
         </div>
 
-        <!-- ABA 2: TRIPULAÇÃO & PERSONAGENS -->
+        <!-- ABA 2: TRIPULAÇÃO DE ONE PIECE -->
         <div id="tabTripulacao" class="hidden space-y-3">
-            <h3 class="pirate-title text-base text-yellow-500 font-bold mb-1">Membros da Tripulação</h3>
-            <p class="text-xs text-gray-400 mb-3">Recrute capitães e guerreiros lendários para gerar ouro automaticamente a cada segundo.</p>
-            
-            <div class="space-y-3" id="listaTripulacao">
-                <!-- Inserido dinamicamente via JS -->
-            </div>
+            <h3 class="pirate-title text-base text-yellow-500 font-bold mb-1">Tripulação Lendária</h3>
+            <p class="text-xs text-gray-400 mb-3">Contrate aliados poderosos para gerar Berries e expandir sua força automática.</p>
+            <div class="space-y-3" id="listaTripulacao"></div>
         </div>
 
-        <!-- ABA 3: ESTALEIRO / MELHORIAS DE NAVIO -->
-        <div id="tabEstaleiro" class="hidden space-y-3">
-            <h3 class="pirate-title text-base text-yellow-500 font-bold mb-1">Estaleiro Naval</h3>
-            <p class="text-xs text-gray-400 mb-3">Melhore seus navios e armas para multiplicar o poder de ganho da sua frota.</p>
-            
-            <div class="space-y-3" id="listaEstaleiro">
-                <!-- Inserido dinamicamente via JS -->
-            </div>
+        <!-- ABA 3: NAVIOS & FROTA -->
+        <div id="tabNavios" class="hidden space-y-3">
+            <h3 class="pirate-title text-base text-yellow-500 font-bold mb-1">Estaleiro de Navios</h3>
+            <p class="text-xs text-gray-400 mb-3">Adquira embarcações lendárias do universo de One Piece para multiplicar seus ganhos.</p>
+            <div class="space-y-3" id="listaNavios"></div>
         </div>
 
-        <!-- ABA 4: DIÁRIO DE BORDO (HISTÓRIAS AUTOMÁTICAS) -->
+        <!-- ABA 4: DIÁRIO DE BORDO (HISTÓRIAS EM TEMPO REAL) -->
         <div id="tabDiario" class="hidden space-y-3">
-            <h3 class="pirate-title text-base text-yellow-500 font-bold mb-1">📜 Diário de Bordo</h3>
-            <p class="text-xs text-gray-400 mb-2">Relatórios em tempo real das conquistas da sua tripulação.</p>
+            <h3 class="pirate-title text-base text-yellow-500 font-bold mb-1">📜 Diário de Bordo da Grand Line</h3>
+            <p class="text-xs text-gray-400 mb-2">Relatos automáticos e aventuras geradas segundo a segundo.</p>
             <div class="bg-gray-950 border border-gray-800 p-4 rounded-xl h-80 overflow-y-auto space-y-2 text-xs text-gray-300 shadow-inner" id="diarioContainer">
-                <p class="text-gray-500">Zarpando para o mar aberto...</p>
+                <p class="text-gray-500">Zarpando rumo ao horizonte...</p>
             </div>
         </div>
 
@@ -109,7 +109,7 @@
         <div id="tabRede" class="hidden space-y-4">
             <div class="card-pirate p-5 rounded-2xl shadow-xl space-y-3">
                 <h3 class="pirate-title text-base text-yellow-500 font-bold">Rede de Capitães</h3>
-                <p class="text-xs text-gray-300">Compartilhe seu link exclusivo. Cada novo marinheiro que entrar expande sua armada no mundo independente!</p>
+                <p class="text-xs text-gray-300">Compartilhe seu link exclusivo. Cada marinheiro que entrar expande sua frota no mundo independente!</p>
                 
                 <div>
                     <label class="block text-[10px] uppercase tracking-wider text-gray-400 mb-1 font-semibold">Seu Link de Convite:</label>
@@ -129,32 +129,44 @@
 
     </main>
 
-    <!-- Rodapé -->
+    <!-- RODAPÉ -->
     <footer class="bg-gray-950 border-t border-gray-900 text-center py-3 text-xs text-gray-500">
-        &copy; 2026 Império dos Piratas - Versão Idle Completa.
+        &copy; 2026 Grand Line Idle - Versão Brasileira Oficial.
     </footer>
 
-    <!-- MOTOR DO JOGO AVANÇADO -->
+    <!-- MOTOR DE JOGO AVANÇADO & MAPA EM TEMPO REAL -->
     <script>
         // Estado do Jogo
         let jogo = {
-            ouro: parseFloat(localStorage.getItem('gp_ouro')) || 300,
+            berries: parseFloat(localStorage.getItem('gp_berries')) || 500,
             nivel: parseInt(localStorage.getItem('gp_nivel')) || 1,
-            recompensa: parseInt(localStorage.getItem('gp_recompensa')) || 15000,
+            recompensa: parseInt(localStorage.getItem('gp_recompensa')) || 30000,
             recrutas: parseInt(localStorage.getItem('gp_recrutas')) || 0,
+            ilhaAtual: 0,
             tripulacao: JSON.parse(localStorage.getItem('gp_tripulacao')) || {
-                novato: { qte: 0, baseGPS: 3, custo: 50, nome: "Marinheiro Novato", icone: "🏴‍☠️" },
-                espadachim: { qte: 0, baseGPS: 15, custo: 250, nome: "Espadachim dos Mares", icone: "⚔️" },
-                navegador: { qte: 0, baseGPS: 70, custo: 1200, nome: "Navegador Experiente", icone: "🗺️" },
-                capitao: { qte: 0, baseGPS: 300, custo: 6000, nome: "Capitão Lendário", icone: "👑" }
+                zoro: { qte: 0, baseBPS: 5, custo: 60, nome: "Roronoa Zoro (Espadachim)", icone: "⚔️" },
+                nami: { qte: 0, baseBPS: 22, custo: 300, nome: "Nami (Navegadora)", icone: "🍊" },
+                sanji: { qte: 0, baseBPS: 95, custo: 1400, nome: "Sanji (Cozinheiro)", icone: "🔥" },
+                luffy: { qte: 0, baseBPS: 400, custo: 7000, nome: "Monkey D. Luffy (Capitão)", icone: "👒" }
             },
-            estaleiro: JSON.parse(localStorage.getItem('gp_estaleiro')) || {
-                vela: { qte: 0, mult: 1.2, custo: 100, nome: "Velas Reforçadas", icone: "⛵" },
-                canoao: { qte: 0, mult: 1.5, custo: 500, nome: "Canhões Pesados", icone: "💣" }
+            navios: JSON.parse(localStorage.getItem('gp_navios')) || {
+                merry: { qte: 0, mult: 1.3, custo: 200, nome: "Going Merry", icone: "⛵" },
+                sunny: { qte: 0, mult: 1.8, custo: 1500, nome: "Thousand Sunny", icone: "🚢" }
             }
         };
 
-        // Identificação e Sistema de Indicação
+        // Ilhas de One Piece
+        const ilhas = [
+            { nome: "East Blue (Vila Syrup)", reqBPS: 0 },
+            { nome: "Grand Line (Loguetown)", reqBPS: 50 },
+            { nome: "Alabasta (Reino do Deserto)", reqBPS: 300 },
+            { nome: "Skypiea (Ilha do Céu)", reqBPS: 1200 },
+            { nome: "Water 7 (Cidade da Água)", reqBPS: 5000 },
+            { nome: "Marineford (Guerra dos Melhores)", reqBPS: 20000 },
+            { nome: "Wano Country (País dos Samurais)", reqBPS: 80000 }
+        ];
+
+        // Sistema de Indicação
         const urlParams = new URLSearchParams(window.location.search);
         const refId = urlParams.get('ref');
         if (refId) localStorage.setItem('gp_uplink', refId);
@@ -173,102 +185,100 @@
 
         // Gestão de Abas
         function mudarAba(aba) {
-            ['Aventura', 'Tripulacao', 'Estaleiro', 'Diario', 'Rede'].forEach(a => {
+            ['Aventura', 'Tripulacao', 'Navios', 'Diario', 'Rede'].forEach(a => {
                 document.getElementById('tab' + a).classList.add('hidden');
-                document.getElementById('btn' + a).className = "py-3 px-2 transition flex flex-col items-center text-gray-400";
+                document.getElementById('btn' + a).className = "py-3 px-2 transition flex flex-col items-center space-y-0.5 text-gray-400";
             });
             document.getElementById('tab' + aba).classList.remove('hidden');
-            document.getElementById('btn' + aba).className = "py-3 px-2 tab-active transition flex flex-col items-center";
+            document.getElementById('btn' + aba).className = "py-3 px-2 tab-active transition flex flex-col items-center space-y-0.5";
         }
 
-        // Cálculo de Ganho por Segundo (GPS)
-        function calcularGPS() {
-            let gpsBase = 5; // GPS base inicial
+        // Cálculo de Berries por Segundo (BPS)
+        function calcularBPS() {
+            let bpsBase = 5;
             for (let k in jogo.tripulacao) {
-                gpsBase += jogo.tripulacao[k].qte * jogo.tripulacao[k].baseGPS;
+                bpsBase += jogo.tripulacao[k].qte * jogo.tripulacao[k].baseBPS;
             }
-            let multEstaleiro = 1;
-            for (let k in jogo.estaleiro) {
-                multEstaleiro += jogo.estaleiro[k].qte * 0.15;
+            let multNavios = 1;
+            for (let k in jogo.navios) {
+                multNavios += jogo.navios[k].qte * 0.25;
             }
-            return gpsBase * multEstaleiro;
+            return bpsBase * multNavios;
         }
 
-        // Renderizar Lojas de Tripulação e Estaleiro
+        // Renderizar Lojas
         function renderizarLojas() {
-            // Tripulação
             let htmlTrip = "";
             for (let key in jogo.tripulacao) {
                 let item = jogo.tripulacao[key];
-                let precoAtual = Math.round(item.custo * Math.pow(1.15, item.qte));
+                let preco = Math.round(item.custo * Math.pow(1.16, item.qte));
                 htmlTrip += `
                     <div class="card-pirate p-3.5 rounded-xl flex items-center justify-between">
                         <div class="flex items-center space-x-3">
-                            <div class="text-2xl bg-gray-900 p-2 rounded-lg border border-yellow-600/30">${item.icone}</div>
+                            <div class="text-2xl bg-gray-900 p-2.5 rounded-xl border border-yellow-600/30">${item.icone}</div>
                             <div>
-                                <h4 class="font-bold text-xs sm:text-sm text-white">${item.nome} (Qte: ${item.qte})</h4>
-                                <p class="text-[11px] text-green-400">+${item.baseGPS} 🪙/s cada</p>
-                                <span class="text-[10px] text-yellow-400 font-semibold">Custo: ${precoAtual.toLocaleString()} 🪙</span>
+                                <h4 class="font-bold text-xs sm:text-sm text-white">${item.nome}</h4>
+                                <p class="text-[11px] text-green-400">+${item.baseBPS} 🪙/s (Possuídos: ${item.qte})</p>
+                                <span class="text-[10px] text-yellow-400 font-semibold">Custo: ${preco.toLocaleString()} 🪙</span>
                             </div>
                         </div>
-                        <button onclick="comprarTripulacao('${key}')" class="bg-yellow-600 hover:bg-yellow-500 text-gray-950 text-xs font-bold px-3 py-2 rounded-lg transition shadow">Contratar</button>
+                        <button onclick="comprarTripulacao('${key}')" class="bg-yellow-600 hover:bg-yellow-500 text-gray-950 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow">Contratar</button>
                     </div>
                 `;
             }
             document.getElementById('listaTripulacao').innerHTML = htmlTrip;
 
-            // Estaleiro
-            let htmlEst = "";
-            for (let key in jogo.estaleiro) {
-                let item = jogo.estaleiro[key];
-                let precoAtual = Math.round(item.custo * Math.pow(1.25, item.qte));
-                htmlEst += `
+            let htmlNav = "";
+            for (let key in jogo.navios) {
+                let item = jogo.navios[key];
+                let preco = Math.round(item.custo * Math.pow(1.28, item.qte));
+                htmlNav += `
                     <div class="card-pirate p-3.5 rounded-xl flex items-center justify-between">
                         <div class="flex items-center space-x-3">
-                            <div class="text-2xl bg-gray-900 p-2 rounded-lg border border-yellow-600/30">${item.icone}</div>
+                            <div class="text-2xl bg-gray-900 p-2.5 rounded-xl border border-yellow-600/30">${item.icone}</div>
                             <div>
-                                <h4 class="font-bold text-xs sm:text-sm text-white">${item.nome} (Nível: ${item.qte})</h4>
-                                <p class="text-[11px] text-green-400">+15% de Bônus Global</p>
-                                <span class="text-[10px] text-yellow-400 font-semibold">Custo: ${precoAtual.toLocaleString()} 🪙</span>
+                                <h4 class="font-bold text-xs sm:text-sm text-white">${item.nome}</h4>
+                                <p class="text-[11px] text-green-400">+25% de Bônus Global (Nível: ${item.qte})</p>
+                                <span class="text-[10px] text-yellow-400 font-semibold">Custo: ${preco.toLocaleString()} 🪙</span>
                             </div>
                         </div>
-                        <button onclick="comprarEstaleiro('${key}')" class="bg-yellow-600 hover:bg-yellow-500 text-gray-950 text-xs font-bold px-3 py-2 rounded-lg transition shadow">Melhorar</button>
+                        <button onclick="comprarNavio('${key}')" class="bg-yellow-600 hover:bg-yellow-500 text-gray-950 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow">Comprar</button>
                     </div>
                 `;
             }
-            document.getElementById('listaEstaleiro').innerHTML = htmlEst;
+            document.getElementById('listaNavios').innerHTML = htmlNav;
         }
 
         function comprarTripulacao(key) {
             let item = jogo.tripulacao[key];
-            let preco = Math.round(item.custo * Math.pow(1.15, item.qte));
-            if (jogo.ouro >= preco) {
-                jogo.ouro -= preco;
+            let preco = Math.round(item.custo * Math.pow(1.16, item.qte));
+            if (jogo.berries >= preco) {
+                jogo.berries -= preco;
                 item.qte++;
-                registrarDiario(`Contratou reforço: ${item.nome}!`);
+                registrarDiario(`Recrutou com sucesso: ${item.nome}!`);
                 atualizarTudo();
             } else {
-                alert("Ouro insuficiente!");
+                alert("Berries insuficientes!");
             }
         }
 
-        function comprarEstaleiro(key) {
-            let item = jogo.estaleiro[key];
-            let preco = Math.round(item.custo * Math.pow(1.25, item.qte));
-            if (jogo.ouro >= preco) {
-                jogo.ouro -= preco;
+        function comprarNavio(key) {
+            let item = jogo.navios[key];
+            let preco = Math.round(item.custo * Math.pow(1.28, item.qte));
+            if (jogo.berries >= preco) {
+                jogo.berries -= preco;
                 item.qte++;
-                registrarDiario(`Melhoria concluída no estaleiro: ${item.nome}!`);
+                registrarDiario(`Adquiriu nova embarcação lendária: ${item.nome}!`);
                 atualizarTudo();
             } else {
-                alert("Ouro insuficiente!");
+                alert("Berries insuficientes!");
             }
         }
 
-        function atacarManual() {
-            let ganho = Math.max(10, Math.floor(calcularGPS() * 4));
-            jogo.ouro += ganho;
-            registrarDiario(`Saque manual bem-sucedido! Obteve +${ganho} 🪙`);
+        function saqueManual() {
+            let ganho = Math.max(15, Math.floor(calcularBPS() * 5));
+            jogo.berries += ganho;
+            registrarDiario(`Ataque surpresa bem-sucedido! Conquistou +${ganho} Berries.`);
             atualizarTudo();
         }
 
@@ -279,13 +289,14 @@
             setTimeout(() => aviso.classList.add('hidden'), 2500);
         }
 
-        // Sistema de Diário e Histórias
-        const historiasAleatorias = [
-            "encontrou um mapa do tesouro soterrado em uma ilha deserta.",
-            "venceu um confronto contra piratas rivais e capturou espólios.",
-            "navegou por correntes misteriosas e descobriu especiarias valiosas.",
-            "enfrentou monstros marinhos e garantiu o tesouro da criatura.",
-            "comercializou mercadorias valiosas em um porto clandestino."
+        // Histórias Automáticas
+        const bancoHistoriasOP = [
+            "encontrou uma Akuma no Mi misteriosa boiando perto da costa.",
+            "derrotou um pelotão de fuzileiros navais em uma batalha naval emocionante.",
+            "descobriu um Poneglif antigo guardado por criaturas marinhas.",
+            "saqueou um comboio do governo mundial carregado de ouro puro.",
+            "desembarcou em uma ilha desconhecida em busca de especiarias e tesouros.",
+            "enfrentou uma tempestade na Grand Line e saiu vitorioso com sua frota."
         ];
 
         function registrarDiario(texto) {
@@ -293,56 +304,111 @@
             const p = document.createElement('p');
             p.innerHTML = `⭐ <b>[${new Date().toLocaleTimeString()}]</b> ${texto}`;
             container.prepend(p);
-            if (container.children.length > 35) container.removeChild(container.lastChild);
+            if (container.children.length > 40) container.removeChild(container.lastChild);
         }
 
-        // Progresso de Missão em Tempo Real
-        let progressoMissao = 0;
-        function atualizarMissao() {
-            progressoMissao += 20;
-            if (progressoMissao > 100) {
-                progressoMissao = 0;
-                let recompensaMissao = Math.floor(calcularGPS() * 6);
-                jogo.ouro += recompensaMissao;
-                let eventoSorteado = historiasAleatorias[Math.floor(Math.random() * historiasAleatorias.length)];
-                registrarDiario(`A frota ${eventoSorteado} (+${recompensaMissao} 🪙)`);
+        // Progresso Automático de Missões e Ilhas
+        let progresso = 0;
+        function processarAventura() {
+            progresso += 20;
+            if (progresso > 100) {
+                progresso = 0;
+                let bps = calcularBPS();
+                let recompensaMissao = Math.floor(bps * 8);
+                jogo.berries += recompensaMissao;
+                jogo.recompensa += Math.floor(bps * 3);
+
+                let historia = bancoHistoriasOP[Math.floor(Math.random() * bancoHistoriasOP.length)];
+                registrarDiario(`A tripulação ${historia} (+${recompensaMissao} Berries)`);
+
+                // Atualizar Ilha se atingir requisito
+                let proximaIlha = ilhas[jogo.ilhaAtual + 1];
+                if (proximaIlha && bps >= proximaIlha.reqBPS) {
+                    jogo.ilhaAtual++;
+                    registrarDiario(`🎉 A frota avançou para a nova ilha: ${proximaIlha.nome}!`);
+                }
             }
-            document.getElementById('barraProgresso').style.width = progressoMissao + "%";
-            document.getElementById('uiTempoMissao`).innerText = `00:${(5 - Math.floor(progressoMissao / 20)).toString().padStart(2, '0')}`;
+            document.getElementById('barraProgresso').style.width = progresso + "%";
+            document.getElementById('uiTempoMissao').innerText = `00:${(5 - Math.floor(progresso / 20)).toString().padStart(2, '0')}`;
         }
 
-        // Loop principal (A cada 1 segundo)
+        // Loop Principal do Idle
         setInterval(() => {
-            let gps = calcularGPS();
-            jogo.ouro += gps / 10; // Atualiza fracionado
-            jogo.recompensa += Math.floor(gps / 4);
+            let bps = calcularBPS();
+            jogo.berries += bps / 10;
             atualizarTudo();
         }, 100);
 
-        // Loop da missão a cada 1 segundo
         setInterval(() => {
-            atualizarMissao();
+            processarAventura();
         }, 1000);
 
         function atualizarTudo() {
-            let gps = calcularGPS();
-            document.getElementById('uiOuro').innerText = Math.floor(jogo.ouro).toLocaleString() + " 🪙";
-            document.getElementById('uiGPS').innerText = `+${gps.toFixed(1)} 🪙/s`;
+            let bps = calcularBPS();
+            document.getElementById('uiBerries').innerText = Math.floor(jogo.berries).toLocaleString() + " 🪙";
+            document.getElementById('uiBPS').innerText = `+${bps.toFixed(1)} 🪙/s`;
             document.getElementById('uiNivel').innerText = jogo.nivel;
             document.getElementById('uiRecompensa').innerText = `฿ ${jogo.recompensa.toLocaleString()}`;
+            document.getElementById('uiIlhaNome').innerText = ilhas[jogo.ilhaAtual].nome;
 
             renderizarLojas();
 
-            // Salvar no navegador
-            localStorage.setItem('gp_ouro', jogo.ouro);
+            // Salvar estado
+            localStorage.setItem('gp_berries', jogo.berries);
             localStorage.setItem('gp_nivel', jogo.nivel);
             localStorage.setItem('gp_recompensa', jogo.recompensa);
             localStorage.setItem('gp_tripulacao', JSON.stringify(jogo.tripulacao));
-            localStorage.setItem('gp_estaleiro', JSON.stringify(jogo.estaleiro));
+            localStorage.setItem('gp_navios', JSON.stringify(jogo.navios));
         }
 
-        // Inicializar na primeira carga
-        renderizarLojas();
+        // MOTOR DO CANVAS DO MAPA ANIMADO
+        window.onload = function() {
+            const canvas = document.getElementById('onePieceMapCanvas');
+            const ctx = canvas.getContext('2d');
+
+            let barcoX = 50;
+            let barcoY = 100;
+
+            function animarMapa() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Desenhar oceano com gradiente
+                let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                grad.addColorStop(0, '#060a17');
+                grad.addColorStop(1, '#02050b');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Desenhar ilhas no mapa
+                ilhas.forEach((ilha, idx) => {
+                    let ix = 80 + (idx * 80);
+                    let iy = 100 + Math.sin(idx) * 40;
+
+                    ctx.fillStyle = idx <= jogo.ilhaAtual ? '#eab308' : '#334155';
+                    ctx.beginPath();
+                    ctx.arc(ix, iy, idx === jogo.ilhaAtual ? 10 : 6, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = '9px Inter, sans-serif';
+                    ctx.fillText(ilha.nome.split(' ')[0], ix - 25, iy + 22);
+                });
+
+                // Movimentar navio em direção à ilha atual
+                let targetX = 80 + (jogo.ilhaAtual * 80);
+                let targetY = 100 + Math.sin(jogo.ilhaAtual) * 40;
+                barcoX += (targetX - barcoX) * 0.05;
+                barcoY += (targetY - barcoY) * 0.05;
+
+                // Desenhar o navio navegando
+                ctx.font = '22px sans-serif';
+                ctx.fillText('🏴‍☠️', barcoX - 10, barcoY + 8);
+
+                requestAnimationFrame(animarMapa);
+            }
+            animarMapa();
+            renderizarLojas();
+        };
     </script>
 </body>
 </html>
