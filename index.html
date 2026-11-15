@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grand Line Idle - Império Pirata One Piece</title>
+    <title>Grand Line World - O Jogo Idle Definitivo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #030712; color: #f8fafc; }
+        body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; }
         .pirate-title { font-family: 'Cinzel', serif; }
-        .bounty-card { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: #1e293b; border: 3px solid #b45309; box-shadow: 0 10px 25px -5px rgba(180, 83, 9, 0.3); }
-        .panel-glass { background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(10px); border: 1px solid rgba(234, 179, 8, 0.3); }
-        .tab-active { border-bottom: 3px solid #eab308; color: #eab308; background: rgba(234, 179, 8, 0.1); }
-        .btn-gold { background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); color: #0f172a; font-weight: 800; }
-        .btn-gold:hover { background: linear-gradient(135deg, #facc15 0%, #eab308 100%); }
+        .bounty-card { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: #1e293b; border: 3px solid #b45309; box-shadow: 0 10px 25px -5px rgba(180, 83, 9, 0.4); }
+        .panel-glass { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(234, 179, 8, 0.35); }
+        .tab-active { border-top: 3px solid #eab308; color: #eab308; background: rgba(234, 179, 8, 0.12); }
+        .btn-gold { background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); color: #0f172a; font-weight: 800; transition: all 0.2s; }
+        .btn-gold:active { transform: scale(0.96); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between pb-16 select-none">
+<body class="min-h-screen flex flex-col justify-between pb-24 select-none">
 
-    <!-- TOPO: CARTAZ DE PROCURADO (BOUNTY POSTER ESTILIZADO) -->
+    <!-- TOPO FIXO: RECOMPENSA E BERRIES -->
     <header class="bg-gray-950 border-b border-yellow-600/40 py-3 px-4 sticky top-0 z-50 shadow-2xl">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-2.5">
-                <div class="w-10 h-10 rounded-xl bg-yellow-600/20 border border-yellow-500/50 flex items-center justify-center text-xl shadow-inner">🏴‍☠️</div>
+                <div class="w-10 h-10 rounded-xl bg-yellow-600/20 border border-yellow-500/50 flex items-center justify-center text-xl shadow-inner" id="headerAvatar">👒</div>
                 <div>
                     <h1 class="pirate-title text-xs text-yellow-500 font-bold" id="uiCapitaoNome">Capitão</h1>
                     <span class="text-[10px] text-gray-400">Recompensa: <strong class="text-yellow-400" id="uiRecompensa">฿ 100,000</strong></span>
@@ -35,101 +35,97 @@
         </div>
     </header>
 
-    <!-- MENU DE ABAS INFERIOR (ACESSO RÁPIDO E SEM TRAVAMENTO) -->
-    <nav class="bg-gray-900/95 border-t border-gray-800 flex justify-around text-[10px] sm:text-xs font-semibold text-gray-400 fixed bottom-0 left-0 right-0 z-50 shadow-2xl py-2">
-        <button onclick="mudarAba('ilhas')" id="btnIlhas" class="flex flex-col items-center space-y-0.5 tab-active py-1 px-2 rounded-lg transition"><span>🗺️</span><span>Ilhas</span></button>
-        <button onclick="mudarAba('boss')" id="btnBoss" class="flex flex-col items-center space-y-0.5 py-1 px-2 rounded-lg transition"><span>⚔️</span><span>Batalha</span></button>
-        <button onclick="mudarAba('tripulacao')" id="btnTripulacao" class="flex flex-col items-center space-y-0.5 py-1 px-2 rounded-lg transition"><span>👥</span><span>Tripulação</span></button>
-        <button onclick="mudarAba('akuma')" id="btnAkuma" class="flex flex-col items-center space-y-0.5 py-1 px-2 rounded-lg transition"><span>🍎</span><span>Akuma Mi</span></button>
-        <button onclick="mudarAba('diario')" id="btnDiario" class="flex flex-col items-center space-y-0.5 py-1 px-2 rounded-lg transition"><span>📜</span><span>Diário</span></button>
-        <button onclick="mudarAba('rede')" id="btnRede" class="flex flex-col items-center space-y-0.5 py-1 px-2 rounded-lg transition"><span>🔗</span><span>Recrutar</span></button>
-    </nav>
-
-    <!-- CONTEÚDO DAS ABAS -->
+    <!-- CONTEÚDO DINÂMICO DAS ABAS -->
     <main class="flex-grow p-4 max-w-md mx-auto w-full space-y-4">
         
-        <!-- ABA 1: VIAGEM ENTRE ILHAS -->
-        <div id="tabIlhas" class="space-y-4">
+        <!-- VISÃO 1: MAPA ESFÉRICO & MUNDO DE ONE PIECE -->
+        <div id="view-mapa" class="space-y-4 tab-view">
             <div class="panel-glass p-4 rounded-2xl shadow-2xl space-y-3">
                 <div class="flex justify-between items-center border-b border-gray-800 pb-2">
                     <div>
-                        <span class="text-[10px] text-yellow-500 font-bold uppercase tracking-wider block">Rota da Grand Line</span>
-                        <h3 class="pirate-title text-sm text-white font-bold" id="uiIlhaNome">East Blue (Vila Syrup)</h3>
+                        <span class="text-[10px] text-yellow-500 font-bold uppercase tracking-wider block">Planeta Grand Line (Globo)</span>
+                        <h3 class="pirate-title text-sm text-white font-bold" id="uiRegiaoAtual">Região: East Blue</h3>
                     </div>
-                    <span class="text-xs text-green-400 font-bold bg-green-950/40 border border-green-800/50 px-2.5 py-1 rounded-full" id="uiBPS">+15 🪙/s</span>
+                    <span class="text-xs text-green-400 font-bold bg-green-950/40 border border-green-800/50 px-2.5 py-1 rounded-full" id="uiBPS">+20 🪙/s</span>
                 </div>
 
-                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800 text-center space-y-2">
-                    <div class="text-4xl" id="uiIlhaIcone">⛵</div>
-                    <p class="text-xs text-gray-300" id="uiIlhaDesc">Sua frota navega pacientemente pelas águas calmas em busca de espólios.</p>
-                    
-                    <div class="pt-2 flex space-x-2">
-                        <button onclick="viajarIlha(-1)" class="w-1/2 bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-bold py-2.5 rounded-xl transition">⬅️ Ilha Anterior</button>
-                        <button onclick="viajarIlha(1)" class="w-1/2 btn-gold text-xs py-2.5 rounded-xl transition shadow">Próxima Ilha ➡️</button>
+                <!-- Canvas do Planeta Esférico -->
+                <div class="relative w-full overflow-hidden rounded-xl border border-yellow-600/30 bg-[#010409] flex flex-col items-center justify-center p-2 shadow-inner">
+                    <canvas id="globeCanvas" width="320" height="220" class="rounded-lg"></canvas>
+                    <p class="text-[10px] text-gray-400 mt-1 text-center">🌍 Navegação Autônoma no Planeta One Piece</p>
+                </div>
+
+                <!-- Progresso da Rota -->
+                <div class="bg-gray-950 p-3.5 rounded-xl border border-gray-800 space-y-2">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-yellow-400 font-bold" id="uiMissaoNome">Explorando Ilhas do Mar</span>
+                        <span class="text-gray-400 font-mono" id="uiTempoMissao">00:05</span>
+                    </div>
+                    <div class="w-full bg-gray-900 rounded-full h-2.5 overflow-hidden border border-gray-800">
+                        <div id="barraProgresso" class="bg-gradient-to-r from-yellow-600 to-yellow-400 h-full" style="width: 0%"></div>
                     </div>
                 </div>
 
-                <button onclick="saqueManual()" class="w-full btn-gold py-3.5 rounded-xl transition shadow-lg text-sm">
-                    ⚔️ Saquear Rota Atual (Ganho Instantâneo)
+                <!-- Botão de Saque Manual -->
+                <button onclick="saqueManual()" class="w-full btn-gold py-3.5 rounded-xl shadow-lg text-sm">
+                    ⚔️ Saquear Rota (Ganho Instantâneo)
                 </button>
             </div>
         </div>
 
-        <!-- ABA 2: BATALHA CONTRA BOSSES -->
-        <div id="tabBoss" class="hidden space-y-4">
-            <div class="panel-glass p-4 rounded-2xl shadow-2xl space-y-4 text-center">
-                <div class="inline-block bg-red-950/40 border border-red-800/50 text-red-400 text-[10px] px-3 py-1 rounded-full font-semibold uppercase">
-                    🔥 Desafio de Chefe (Boss Raid)
+        <!-- VISÃO 2: CAPITÃO, AKUMA NO MI & PODERES -->
+        <div id="view-capitao" class="space-y-4 tab-view hidden">
+            <div class="panel-glass p-4 rounded-2xl shadow-2xl space-y-4">
+                <div class="bounty-card p-4 rounded-xl text-center space-y-2">
+                    <div class="text-4xl" id="bountyAvatar">👒</div>
+                    <h3 class="pirate-title text-base font-extrabold" id="bountyNome">Monkey D. Luffy</h3>
+                    <p class="text-xs font-bold text-amber-800">WANTED DEAD OR ALIVE</p>
+                    <p class="text-sm font-black text-amber-950" id="bountyValor">฿ 100,000,000</p>
                 </div>
 
-                <div class="bounty-card p-4 rounded-xl space-y-2">
-                    <span class="text-3xl" id="bossIcone">⚓</span>
-                    <h4 class="pirate-title text-base font-bold" id="bossNome">Capitão Morgan</h4>
-                    <p class="text-xs font-semibold text-red-700">Recompensa pela Cabeça: <span id="bossRecompensa">฿ 20,000</span></p>
-                    
-                    <!-- Barra de HP do Boss -->
-                    <div class="w-full bg-red-950/60 rounded-full h-3 overflow-hidden border border-red-900 mt-2">
-                        <div id="bossHpBar" class="bg-gradient-to-r from-red-600 to-orange-500 h-full transition-all duration-300" style="width: 100%"></div>
+                <!-- Escolha de Alcunha / Avatar -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-yellow-400 uppercase">Escolha seu Personagem Principal:</label>
+                    <div class="grid grid-cols-2 gap-2" id="gridAvatares">
+                        <!-- Gerado via JS -->
                     </div>
-                    <span class="text-[10px] text-gray-700 font-bold" id="bossHpText">HP: 100 / 100</span>
                 </div>
 
-                <button onclick="atacarBoss()" class="w-full bg-red-600 hover:bg-red-500 text-white font-extrabold py-3.5 rounded-xl transition shadow-lg text-sm">
-                    💥 Atacar Boss com Sua Tripulação!
-                </button>
+                <!-- Frutas do Diabo & Haki -->
+                <div class="space-y-2 pt-2 border-t border-gray-800">
+                    <h4 class="text-xs font-bold text-yellow-400 uppercase">Frutas do Diabo & Haki</h4>
+                    <div id="listaPoderes" class="space-y-2">
+                        <!-- Gerado via JS -->
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- ABA 3: TRIPULAÇÃO -->
-        <div id="tabTripulacao" class="hidden space-y-3">
-            <h3 class="pirate-title text-sm text-yellow-500 font-bold mb-1">Recrutar Aliados Lendários</h3>
-            <p class="text-xs text-gray-400 mb-2">Compre companheiros para gerar Berries automaticamente a cada segundo.</p>
+        <!-- VISÃO 3: TRIPULAÇÃO -->
+        <div id="view-tripulacao" class="space-y-3 tab-view hidden">
+            <h3 class="pirate-title text-sm text-yellow-500 font-bold mb-1">Recrutar Tripulação Lendária</h3>
+            <p class="text-xs text-gray-400 mb-2">Compre aliados para gerar Berries automaticamente a cada segundo.</p>
             <div class="space-y-2.5" id="listaTripulacao"></div>
         </div>
 
-        <!-- ABA 4: AKUMA NO MI & PODERES -->
-        <div id="tabAkuma" class="hidden space-y-4">
-            <div class="panel-glass p-4 rounded-2xl shadow-xl space-y-3">
-                <h3 class="pirate-title text-sm text-yellow-500 font-bold">Poderes de Akuma no Mi & Haki</h3>
-                <p class="text-xs text-gray-300">Desperte frutas lendárias e fortaleça seu Haki para multiplicar seus ganhos.</p>
-                
-                <div class="space-y-2.5" id="listaAkumaMi">
-                    <!-- Gerado via JS -->
-                </div>
-            </div>
+        <!-- VISÃO 4: NAVIOS & ESTALEIRO -->
+        <div id="view-navios" class="space-y-3 tab-view hidden">
+            <h3 class="pirate-title text-sm text-yellow-500 font-bold mb-1">Estaleiro Naval</h3>
+            <p class="text-xs text-gray-400 mb-2">Adquira barcos lendários para multiplicar seus ganhos em bônus globais.</p>
+            <div class="space-y-2.5" id="listaNavios"></div>
         </div>
 
-        <!-- ABA 5: DIÁRIO DE BORDO (HISTÓRIAS) -->
-        <div id="tabDiario" class="hidden space-y-3">
+        <!-- VISÃO 5: DIÁRIO DE BORDO (HISTÓRIAS) -->
+        <div id="view-diario" class="space-y-3 tab-view hidden">
             <h3 class="pirate-title text-sm text-yellow-500 font-bold mb-1">📜 Diário de Bordo da Grand Line</h3>
-            <p class="text-xs text-gray-400 mb-2">Relatos automáticos de aventuras e combates em tempo real.</p>
+            <p class="text-xs text-gray-400 mb-2">Relatos automáticos de aventuras, tesouros e combates em tempo real.</p>
             <div class="bg-gray-950 border border-gray-800 p-3.5 rounded-xl h-80 overflow-y-auto space-y-2 text-xs text-gray-300 shadow-inner" id="diarioContainer">
                 <p class="text-gray-500">Zarpando rumo ao Novo Mundo...</p>
             </div>
         </div>
 
-        <!-- ABA 6: REDE DE RECRUTAMENTO (INDICAÇÃO) -->
-        <div id="tabRede" class="hidden space-y-4">
+        <!-- VISÃO 6: REDE DE RECRUTAMENTO (INDICAÇÃO) -->
+        <div id="view-rede" class="space-y-4 tab-view hidden">
             <div class="panel-glass p-4 rounded-2xl shadow-xl space-y-3">
                 <h3 class="pirate-title text-sm text-yellow-500 font-bold">Rede de Capitães Independentes</h3>
                 <p class="text-xs text-gray-300">Compartilhe seu link exclusivo. Cada capitão que entrar expande sua armada no mundo de One Piece!</p>
@@ -152,49 +148,53 @@
 
     </main>
 
-    <!-- MOTOR DO JOGO E INTERATIVIDADE -->
+    <!-- MENU DE ABAS INFERIOR FLUTUANTE (100% BLINDADO E INTERATIVO) -->
+    <nav class="bg-gray-900/95 border-t border-gray-800 flex justify-around text-[10px] sm:text-xs font-semibold text-gray-400 fixed bottom-0 left-0 right-0 z-50 shadow-2xl py-2 px-1">
+        <button onclick="mudarVisao('mapa')" id="nav-mapa" class="flex flex-col items-center space-y-0.5 py-1 px-2 rounded-lg transition tab-active"><span>🌍</span><span>Mundo</span></button>
+        <button onclick="mudarVisao('capitao')" id="nav-capitao" class="flex flex-col items-center space-y-0.5 py-1 px-2 rounded-lg transition"><span>👒</span><span>Capitão</span></button>
+        <button onclick="mudarVisao('tripulacao')" id="nav-tripulacao" class="flex flex-col items-center space-y-0.5 py-1 px-2 rounded-lg transition"><span>👥</span><span>Frota</span></button>
+        <button onclick="mudarVisao('navios')" id="nav-navios" class="flex flex-col items-center space-y-0.5 py-1 px-2 rounded-lg transition"><span>⛵</span><span>Barcos</span></button>
+        <button onclick="mudarVisao('diario')" id="nav-diario" class="flex flex-col items-center space-y-0.5 py-1 px-2 rounded-lg transition"><span>📜</span><span>Histórias</span></button>
+        <button onclick="mudarVisao('rede')" id="nav-rede" class="flex flex-col items-center space-y-0.5 py-1 px-2 rounded-lg transition"><span>🔗</span><span>Recrutar</span></button>
+    </nav>
+
+    <!-- MOTOR DE JOGO ROBUSTO -->
     <script>
         // Estado Global do Jogo
         let jogo = {
             berries: parseFloat(localStorage.getItem('op_berries')) || 1000,
             recompensa: parseInt(localStorage.getItem('op_recompensa')) || 100000,
-            ilhaIndex: parseInt(localStorage.getItem('op_ilha')) || 0,
-            bossIndex: parseInt(localStorage.getItem('op_boss')) || 0,
-            bossHpAtual: 100,
+            avatarAtivo: localStorage.getItem('op_avatar') || 'luffy',
+            regiaoIndex: parseInt(localStorage.getItem('op_regiao')) || 0,
             recrutas: parseInt(localStorage.getItem('op_recrutas')) || 0,
+            poderes: JSON.parse(localStorage.getItem('op_poderes')) || { haki: 1, akuma: 0 },
             tripulacao: JSON.parse(localStorage.getItem('op_tripulacao')) || {
                 zoro: { qte: 0, baseBPS: 8, custo: 60, nome: "Roronoa Zoro", icone: "⚔️" },
                 nami: { qte: 0, baseBPS: 35, custo: 300, nome: "Nami", icone: "🍊" },
                 sanji: { qte: 0, baseBPS: 150, custo: 1500, nome: "Sanji", icone: "🔥" },
                 luffy: { qte: 0, baseBPS: 600, custo: 7500, nome: "Monkey D. Luffy", icone: "👒" }
             },
-            akumaMi: JSON.parse(localStorage.getItem('op_akuma')) || {
-                gomu: { qte: 0, bonus: 1.5, custo: 500, nome: "Gomu Gomu no Mi", icone: "🔴" },
-                mera: { qte: 0, bonus: 2.2, custo: 2500, nome: "Mera Mera no Mi", icone: "🔥" },
-                gura: { qte: 0, bonus: 4.0, custo: 12000, nome: "Gura Gura no Mi", icone: "🌊" }
+            navios: JSON.parse(localStorage.getItem('op_navios')) || {
+                merry: { qte: 0, mult: 1.3, custo: 200, nome: "Going Merry", icone: "⛵" },
+                sunny: { qte: 0, mult: 1.8, custo: 1500, nome: "Thousand Sunny", icone: "🚢" }
             }
         };
 
-        // Lista de Ilhas
-        const ilhasOnePiece = [
-            { nome: "East Blue (Vila Syrup)", icone: "⛵", desc: "Águas tranquilas onde grandes jornadas se iniciam." },
-            { nome: "Grand Line (Loguetown)", icone: "⚓", desc: "A cidade do início e do fim, cercada por fortes correntes." },
-            { nome: "Alabasta (Reino das Areias)", icone: "🏜️", desc: "Desertos escaldantes dominados por conflitos e agentes secretos." },
-            { nome: "Skypiea (Ilha dos Céus)", icone: "☁️", desc: "Território divino acima das nuvens, rico em dialetos e tesouros." },
-            { nome: "Water 7 (Cidade da Água)", icone: "🚢", desc: "O lar dos melhores carpinteiros navais do mundo." },
-            { nome: "Marineford (Quartel General)", icone: "⚡", desc: "O campo de batalha supremo contra a Marinha." },
-            { nome: "Wano Country (País dos Samurais)", icone: "🌸", desc: "Terra fechada governada por ferozes samurais e Yonkos." }
+        const avataresOp = [
+            { id: 'luffy', nome: 'Monkey D. Luffy', icone: '👒', valor: '฿ 3,000,000,000' },
+            { id: 'zoro', nome: 'Roronoa Zoro', icone: '⚔️', valor: '฿ 1,111,000,000' },
+            { id: 'shanks', nome: 'Shanks, o Ruivo', icone: '🍷', valor: '฿ 4,048,900,000' },
+            { id: 'ace', nome: 'Portgas D. Ace', icone: '🔥', valor: '฿ 550,000,000' }
         ];
 
-        // Lista de Bosses
-        const bossesOnePiece = [
-            { nome: "Capitão Morgan", icone: "🪓", hpMax: 100, recompensa: 20000 },
-            { nome: "Buggy, o Palhaço", icone: "🎪", hpMax: 350, recompensa: 75000 },
-            { nome: "Sir Crocodile", icone: "🐊", hpMax: 1200, recompensa: 250000 },
-            { nome: "Enel (Deus de Skypiea)", icone: "⚡", hpMax: 5000, recompensa: 1000000 },
-            { nome: "Rob Lucci (CP9)", icone: "🐆", hpMax: 20000, recompensa: 4500000 },
-            { nome: "Almirante Akainu", icone: "🌋", hpMax: 80000, recompensa: 15000000 },
-            { nome: "Kaido das Feras", icone: "🐉", hpMax: 350000, recompensa: 50000000 }
+        const regioesMundo = [
+            { nome: "East Blue (Mar Inicial)", req: 0 },
+            { nome: "Grand Line (Reverse Mountain)", req: 80 },
+            { nome: "Alabasta (Reino do Deserto)", req: 400 },
+            { nome: "Skypiea (Ilha dos Céus)", req: 1800 },
+            { nome: "Water 7 (Cidade da Água)", req: 8000 },
+            { nome: "Marineford (Guerra Suprema)", req: 35000 },
+            { nome: "Novo Mundo (Wano / Onigashima)", req: 150000 }
         ];
 
         // Sistema de Indicação
@@ -214,66 +214,75 @@
         document.getElementById('uiCapitaoNome').innerText = `Capitão ${meuId}`;
         document.getElementById('statRecrutas').innerText = jogo.recrutas;
 
-        // Gestão de Abas Segura e Travamento Zero
-        function mudarAba(aba) {
-            ['Ilhas', 'Boss', 'Tripulacao', 'Akuma', 'Diario', 'Rede'].forEach(a => {
-                let el = document.getElementById('tab' + a);
-                let btn = document.getElementById('btn' + a);
-                if (el) el.classList.add('hidden');
-                if (btn) btn.className = "flex flex-col items-center space-y-0.5 py-1 px-2 rounded-lg transition text-gray-400";
-            });
-            
-            let abaAtiva = document.getElementById('tab' + aba);
-            let btnAtivo = document.getElementById('btn' + aba);
-            if (abaAtiva) abaAtiva.classList.remove('hidden');
-            if (btnAtivo) btnAtivo.className = "flex flex-col items-center space-y-0.5 tab-active py-1 px-2 rounded-lg transition";
+        // Gestão de Visão/Abas Blindada
+        function mudarVisao(visaoId) {
+            document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('tab-active'));
+
+            let alvo = document.getElementById('view-' + visaoId);
+            let navBtn = document.getElementById('nav-' + visaoId);
+
+            if (alvo) alvo.classList.remove('hidden');
+            if (navBtn) navBtn.classList.add('tab-active');
         }
 
-        // Cálculo de BPS (Berries por Segundo)
+        // Cálculo de BPS
         function calcularBPS() {
             let base = 10;
             for (let k in jogo.tripulacao) {
                 base += jogo.tripulacao[k].qte * jogo.tripulacao[k].baseBPS;
             }
-            let multAkuma = 1;
-            for (let k in jogo.akumaMi) {
-                multAkuma += jogo.akumaMi[k].qte * (jogo.akumaMi[k].bonus - 1);
+            let multNavios = 1;
+            for (let k in jogo.navios) {
+                multNavios += jogo.navios[k].qte * 0.25;
             }
-            return base * multAkuma;
+            let multPoderes = 1 + (jogo.poderes.haki * 0.1) + (jogo.poderes.akuma * 0.25);
+            return base * multNavios * multPoderes;
         }
 
-        // Viagem entre Ilhas
-        function viajarIlha(direcao) {
-            jogo.ilhaIndex += direcao;
-            if (jogo.ilhaIndex < 0) jogo.ilhaIndex = 0;
-            if (jogo.ilhaIndex >= ilhasOnePiece.length) jogo.ilhaIndex = ilhasOnePiece.length - 1;
-            atualizarInterface();
-        }
+        // Renderizar Lojas e Personagem
+        function renderizarTudo() {
+            // Avatar / Capitão
+            let av = avataresOp.find(a => a.id === jogo.avatarAtivo) || avataresOp[0];
+            document.getElementById('headerAvatar').innerText = av.icone;
+            document.getElementById('bountyAvatar').innerText = av.icone;
+            document.getElementById('bountyNome').innerText = av.nome;
+            document.getElementById('bountyValor').innerText = av.valor;
 
-        // Batalha contra Boss
-        function atacarBoss() {
-            let boss = bossesOnePiece[jogo.bossIndex];
-            let dano = Math.max(15, Math.floor(calcularBPS() * 3));
-            jogo.bossHpAtual -= dano;
+            let htmlAvatares = "";
+            avataresOp.forEach(a => {
+                let sel = jogo.avatarAtivo === a.id ? 'border-yellow-500 bg-yellow-500/20' : 'border-gray-800 bg-gray-900';
+                htmlAvatares += `
+                    <div onclick="mudarAvatar('${a.id}')" class="p-2.5 rounded-xl border ${sel} cursor-pointer flex items-center space-x-2">
+                        <span class="text-xl">${a.icone}</span>
+                        <span class="text-xs font-bold text-white">${a.nome}</span>
+                    </div>
+                `;
+            });
+            document.getElementById('gridAvatares').innerHTML = htmlAvatares;
 
-            if (jogo.bossHpAtual <= 0) {
-                let premio = boss.recompensa;
-                jogo.berries += premio;
-                jogo.recompensa += Math.floor(premio / 2);
-                registrarDiario(`🏆 Vitória! Derrotou o boss ${boss.nome} e obteve +${premio.toLocaleString()} Berries!`);
-                
-                // Avançar para próximo Boss
-                jogo.bossIndex++;
-                if (jogo.bossIndex >= bossesOnePiece.length) jogo.bossIndex = bossesOnePiece.length - 1;
-                jogo.bossHpAtual = bossesOnePiece[jogo.bossIndex].hpMax;
-            } else {
-                registrarDiario(`Atingiu ${boss.nome} causando ${dano} de dano!`);
-            }
-            atualizarInterface();
-        }
+            // Poderes (Haki & Akuma)
+            let ph = Math.round(500 * Math.pow(1.5, jogo.poderes.haki));
+            let pa = Math.round(2000 * Math.pow(1.8, jogo.poderes.akuma));
+            document.getElementById('listaPoderes').innerHTML = `
+                <div class="panel-glass p-3 rounded-xl flex justify-between items-center">
+                    <div>
+                        <h5 class="font-bold text-xs text-white">⚡ Haki do Armamento (Nível ${jogo.poderes.haki})</h5>
+                        <p class="text-[10px] text-green-400">+10% de Bônus Global</p>
+                        <span class="text-[10px] text-yellow-400 font-semibold">Custo: ${ph.toLocaleString()} 🪙</span>
+                    </div>
+                    <button onclick="evoluirPoder('haki')" class="btn-gold text-xs px-3 py-1.5 rounded-lg">Evoluir</button>
+                </div>
+                <div class="panel-glass p-3 rounded-xl flex justify-between items-center">
+                    <div>
+                        <h5 class="font-bold text-xs text-white">🍎 Fruta do Diabo (Nível ${jogo.poderes.akuma})</h5>
+                        <p class="text-[10px] text-green-400">+25% de Ganhos Automáticos</p>
+                        <span class="text-[10px] text-yellow-400 font-semibold">Custo: ${pa.toLocaleString()} 🪙</span>
+                    </div>
+                    <button onclick="evoluirPoder('akuma')" class="btn-gold text-xs px-3 py-1.5 rounded-lg">Despertar</button>
+                </div>
+            `;
 
-        // Lojas de Tripulação e Akuma no Mi
-        function renderizarLojas() {
             // Tripulação
             let htmlTrip = "";
             for (let k in jogo.tripulacao) {
@@ -289,32 +298,50 @@
                                 <span class="text-[10px] text-yellow-400 font-semibold">Custo: ${preco.toLocaleString()} 🪙</span>
                             </div>
                         </div>
-                        <button onclick="comprarTripulacao('${k}')" class="btn-gold text-xs px-3.5 py-2 rounded-xl transition">Recrutar</button>
+                        <button onclick="comprarTripulacao('${k}')" class="btn-gold text-xs px-3.5 py-2 rounded-xl">Recrutar</button>
                     </div>
                 `;
             }
             document.getElementById('listaTripulacao').innerHTML = htmlTrip;
 
-            // Akuma no Mi
-            let htmlAkuma = "";
-            for (let k in jogo.akumaMi) {
-                let item = jogo.akumaMi[k];
-                let preco = Math.round(item.custo * Math.pow(1.4, item.qte));
-                htmlAkuma += `
+            // Navios
+            let htmlNav = "";
+            for (let k in jogo.navios) {
+                let item = jogo.navios[k];
+                let preco = Math.round(item.custo * Math.pow(1.3, item.qte));
+                htmlNav += `
                     <div class="panel-glass p-3.5 rounded-xl flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="text-2xl bg-gray-900 p-2 rounded-xl border border-yellow-600/30">${item.icone}</div>
                             <div>
                                 <h4 class="font-bold text-xs sm:text-sm text-white">${item.nome}</h4>
-                                <p class="text-[11px] text-green-400">Multiplicador x${item.bonus} (Nível: ${item.qte})</p>
+                                <p class="text-[11px] text-green-400">+30% Bônus Global (Nível: ${item.qte})</p>
                                 <span class="text-[10px] text-yellow-400 font-semibold">Custo: ${preco.toLocaleString()} 🪙</span>
                             </div>
                         </div>
-                        <button onclick="comprarAkuma('${k}')" class="btn-gold text-xs px-3.5 py-2 rounded-xl transition">Comprar</button>
+                        <button onclick="comprarNavio('${k}')" class="btn-gold text-xs px-3.5 py-2 rounded-xl">Comprar</button>
                     </div>
                 `;
             }
-            document.getElementById('listaAkumaMi').innerHTML = htmlAkuma;
+            document.getElementById('listaNavios').innerHTML = htmlNav;
+        }
+
+        function mudarAvatar(id) {
+            jogo.avatarAtivo = id;
+            localStorage.setItem('op_avatar', id);
+            renderizarTudo();
+        }
+
+        function evoluirPoder(tipo) {
+            if (tipo === 'haki') {
+                let preco = Math.round(500 * Math.pow(1.5, jogo.poderes.haki));
+                if (jogo.berries >= preco) { jogo.berries -= preco; jogo.poderes.haki++; } else { alert("Berries insuficientes!"); return; }
+            } else if (tipo === 'akuma') {
+                let preco = Math.round(2000 * Math.pow(1.8, jogo.poderes.akuma));
+                if (jogo.berries >= preco) { jogo.berries -= preco; jogo.poderes.akuma++; } else { alert("Berries insuficientes!"); return; }
+            }
+            localStorage.setItem('op_poderes', JSON.stringify(jogo.poderes));
+            renderizarTudo();
         }
 
         function comprarTripulacao(k) {
@@ -323,27 +350,27 @@
             if (jogo.berries >= preco) {
                 jogo.berries -= preco;
                 item.qte++;
-                registrarDiario(`Recrutou o aliado ${item.nome}!`);
-                atualizarInterface();
+                registrarDiario(`Recrutou o aliado lendário ${item.nome}!`);
+                renderizarTudo();
             } else { alert("Berries insuficientes!"); }
         }
 
-        function comprarAkuma(k) {
-            let item = jogo.akumaMi[k];
-            let preco = Math.round(item.custo * Math.pow(1.4, item.qte));
+        function comprarNavio(k) {
+            let item = jogo.navios[k];
+            let preco = Math.round(item.custo * Math.pow(1.3, item.qte));
             if (jogo.berries >= preco) {
                 jogo.berries -= preco;
                 item.qte++;
-                registrarDiario(`Consumiu a fruta ${item.nome}! Poder aumentado.`);
-                atualizarInterface();
+                registrarDiario(`Adquiriu a embarcação lendária ${item.nome}!`);
+                renderizarTudo();
             } else { alert("Berries insuficientes!"); }
         }
 
         function saqueManual() {
             let ganho = Math.max(20, Math.floor(calcularBPS() * 5));
             jogo.berries += ganho;
-            registrarDiario(`Saque bem-sucedido na rota! +${ganho.toLocaleString()} Berries.`);
-            atualizarInterface();
+            registrarDiario(`Investida rápida bem-sucedida! Obteve +${ganho.toLocaleString()} Berries.`);
+            atualizarTelaUI();
         }
 
         function copiarLink() {
@@ -355,11 +382,11 @@
 
         // Histórias Automáticas
         const bancoHistorias = [
-            "encontrou um tesouro antigo enterrado na costa da ilha.",
+            "encontrou um tesouro antigo enterrado na costa de uma ilha misteriosa.",
             "venceu um duelo contra piratas rivais em alto-mar.",
-            "navegou por correntes misteriosas e obteve especiarias raras.",
-            "encontrou um Poneglif antigo guardado por marinheiros.",
-            "comemorou vitórias recentes em uma taverna animada."
+            "navegou por correntes místicas e obteve especiarias raríssimas.",
+            "descobriu um Poneglif antigo guardado por criaturas marinhas.",
+            "desembarcou em uma taverna portuária para festejar com a tripulação."
         ];
 
         function registrarDiario(texto) {
@@ -371,57 +398,120 @@
             if (container.children.length > 40) container.removeChild(container.lastChild);
         }
 
-        // Loop Principal do Idle (A cada 1 segundo)
+        // Progresso de Missão e Região
+        let progresso = 0;
+        function processarAventura() {
+            progresso += 25;
+            if (progresso > 100) {
+                progresso = 0;
+                let bps = calcularBPS();
+                let recompensa = Math.floor(bps * 6);
+                jogo.berries += recompensa;
+                jogo.recompensa += Math.floor(bps * 2);
+
+                let historia = bancoHistorias[Math.floor(Math.random() * bancoHistorias.length)];
+                registrarDiario(`A frota ${historia} (+${recompensa} Berries)`);
+
+                let proxRegiao = regioesMundo[jogo.regiaoIndex + 1];
+                if (proxRegiao && bps >= proxRegiao.req) {
+                    jogo.regiaoIndex++;
+                    registrarDiario(`🎉 Sua armada conquistou e avançou para o mar: ${proxRegiao.nome}!`);
+                }
+            }
+            let barra = document.getElementById('barraProgresso');
+            let tempo = document.getElementById('uiTempoMissao');
+            if (barra) barra.style.width = progresso + "%";
+            if (tempo) tempo.innerText = `00:${(4 - Math.floor(progresso / 25)).toString().padStart(2, '0')}`;
+        }
+
+        // Loop Idle
         setInterval(() => {
             let bps = calcularBPS();
-            jogo.berries += bps;
-            atualizarInterface();
+            jogo.berries += bps / 10;
+            atualizarTelaUI();
+        }, 100);
+
+        setInterval(() => {
+            processarAventura();
         }, 1000);
 
-        // Eventos aleatórios a cada 8 segundos
-        setInterval(() => {
-            let evento = bancoHistorias[Math.floor(Math.random() * bancoHistorias.length)];
-            let extra = Math.floor(calcularBPS() * 5);
-            jogo.berries += extra;
-            registrarDiario(`Sua frota ${evento} (+${extra} Berries)`);
-        }, 8000);
-
-        function atualizarInterface() {
+        function atualizarTelaUI() {
             let bps = calcularBPS();
-            let ilha = ilhasOnePiece[jogo.ilhaIndex];
-            let boss = bossesOnePiece[jogo.bossIndex];
-
             document.getElementById('uiBerries').innerText = Math.floor(jogo.berries).toLocaleString() + " 🪙";
             document.getElementById('uiBPS').innerText = `+${bps.toFixed(1)} 🪙/s`;
             document.getElementById('uiRecompensa').innerText = `฿ ${jogo.recompensa.toLocaleString()}`;
-            
-            // Ilhas
-            document.getElementById('uiIlhaNome').innerText = ilha.nome;
-            document.getElementById('uiIlhaIcone').innerText = ilha.icone;
-            document.getElementById('uiIlhaDesc').innerText = ilha.desc;
+            document.getElementById('uiRegiaoAtual').innerText = `Região: ${regioesMundo[jogo.regiaoIndex].nome}`;
 
-            // Boss
-            document.getElementById('bossNome').innerText = boss.nome;
-            document.getElementById('bossIcone').innerText = boss.icone;
-            document.getElementById('bossRecompensa').innerText = `฿ ${boss.recompensa.toLocaleString()}`;
-            let hpPorc = Math.max(0, (jogo.bossHpAtual / boss.hpMax) * 100);
-            document.getElementById('bossHpBar').style.width = hpPorc + "%";
-            document.getElementById('bossHpText').innerText = `HP: ${jogo.bossHpAtual} / ${boss.hpMax}`;
-
-            renderizarLojas();
-
-            // Salvar
             localStorage.setItem('op_berries', jogo.berries);
             localStorage.setItem('op_recompensa', jogo.recompensa);
-            localStorage.setItem('op_ilha', jogo.ilhaIndex);
-            localStorage.setItem('op_boss', jogo.bossIndex);
+            localStorage.setItem('op_regiao', jogo.regiaoIndex);
             localStorage.setItem('op_tripulacao', JSON.stringify(jogo.tripulacao));
-            localStorage.setItem('op_akuma', JSON.stringify(jogo.akumaMi));
+            localStorage.setItem('op_navios', JSON.stringify(jogo.navios));
         }
 
-        // Inicializar
-        renderizarLojas();
-        atualizarInterface();
+        // MOTOR DO PLANETA ESFÉRICO (GLOBE CANVAS)
+        window.onload = function() {
+            const canvas = document.getElementById('globeCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let angulo = 0;
+
+            function desenharGlobo() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let cx = canvas.width / 2;
+                let cy = canvas.height / 2;
+                let r = 85;
+
+                // Fundo Marinho
+                ctx.fillStyle = "#010409";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Globo Esférico
+                let grad = ctx.createRadialGradient(cx - 20, cy - 20, 10, cx, cy, r);
+                grad.addColorStop(0, '#1e3a8a');
+                grad.addColorStop(1, '#060913');
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#eab308';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                // Red Line Rotacionando
+                angulo += 0.012;
+                ctx.strokeStyle = 'rgba(239, 68, 68, 0.7)';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                let rx = Math.sin(angulo) * r;
+                ctx.ellipse(cx, cy, Math.abs(rx) * 0.35, r, 0, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Ilhas ao Redor do Globo
+                regioesMundo.forEach((reg, i) => {
+                    let a = angulo + (i * (Math.PI * 2 / regioesMundo.length));
+                    let ix = cx + Math.cos(a) * (r - 18);
+                    let iy = cy + Math.sin(a) * 40;
+
+                    ctx.fillStyle = i <= jogo.regiaoIndex ? '#eab308' : '#64748b';
+                    ctx.beginPath();
+                    ctx.arc(ix, iy, i === jogo.regiaoIndex ? 6 : 3.5, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                // Navio Pirata Navegando
+                let sa = angulo * 1.5;
+                let sx = cx + Math.cos(sa) * (r - 8);
+                let sy = cy + Math.sin(sa) * 22;
+                ctx.font = '18px sans-serif';
+                ctx.fillText('🏴‍☠️', sx - 9, sy + 7);
+
+                requestAnimationFrame(desenharGlobo);
+            }
+
+            desenharGlobo();
+            renderizarTudo();
+        };
     </script>
 </body>
 </html>
